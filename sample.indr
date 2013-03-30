@@ -1,0 +1,33 @@
+animals
+	dog
+		thoughts
+			"woof"
+		color
+			black
+		attitude
+			loyal
+	cat
+		attitude
+			aloof
+		color
+			red
+		thoughts
+			"meow"
+	human
+		color
+			pink
+		thoughts
+			"I wonder what I’ll have for breakfast tomorrow.
+
+Also, how about that other thing?
+
+You know, here is some of my favorite whitespace:
+\" \", \"
+\", and \"	\". And here they are mixed together: '  
+  foo 
+    	 bar
+'.
+
+My favorite animal is the porpoise."
+		attitude
+			curious

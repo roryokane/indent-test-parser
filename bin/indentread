@@ -3,10 +3,10 @@
 require './lib/flexverb'
 
 code = if "-e" == ARGV[0]
-  ARGV[1]
+	ARGV[1]
 else
-  filename = ARGV[0]
-  File.read(filename).chomp
+	filename = ARGV[0]
+	File.read(filename).chomp
 end
 
 FlexVerb::Interpreter.new(code).interpret
