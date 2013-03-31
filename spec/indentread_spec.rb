@@ -90,21 +90,21 @@ describe IndentRead do
 			xform = IndentRead::Transform.new
 			expect(xform.apply(parsed)).to eq(structure)
 		end
-
+		
 		it "transforms a basic string" do
 			expect_transforms_to(
 				{:string_contents => [{:str_chars=>"abc"}]},
 				'abc'
 			)
 		end
-
+		
 		it "transforms a string with a backslash-escape" do
 			expect_transforms_to(
 				{:string_contents => [{:str_chars=>"abc "}, {:str_escaped_char=>"\""}, {:str_chars=>" def"}]},
 				"abc \" def"
 			)
 		end
-
+		
 		it "transforms a list of nodes into one hash" do
 			expect_transforms_to(
 				{:nodes => [{:abc=>""}, {:def=>""}]},
@@ -112,7 +112,7 @@ describe IndentRead do
 			)
 		end
 	end
-
+	
 	context "Parser" do
 		def parse(text)
 			IndentRead::Parser.new.parse(text)
