@@ -31,3 +31,4 @@ You know, here is some of my favorite whitespace:
 My favorite animal is the porpoise."
 		attitude
 			curious
+	porpoise(thoughts() color(blue) attitude(friendly))

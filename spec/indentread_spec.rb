@@ -38,34 +38,34 @@ describe IndentRead do
 		end
 		
 		context "reading paren nodes" do
-			it "reads a small paren node" do
+			it "reads a paren node with no children" do
 				expect_reads_as(
-					'(abc)',
-					:abc
+					'abc()',
+					{:abc => {}}
 				)
 			end
 			it "reads a paren node with a single basic child" do
 				expect_reads_as(
-					'(abc def)',
+					'abc(def)',
 					{:abc => :def}
 				)
 			end
 			it "reads a paren node with a paren-node child" do
 				expect_reads_as(
-					'(abc (def "ghi"))',
+					'abc(def("ghi"))',
 					{:abc => {:def => "ghi"}}
 				)
 			end
 			it "reads a paren node with two paren-node children" do
 				expect_reads_as(
-					'(abc (def "ghi") (lmn "opq")',
+					'abc(def("ghi") lmn("opq"))',
 					{:abc => {:def => "ghi", :lmn => "opq"}}
 				)
 			end
 			it "fails to read a paren node where any of multiple children are basic" do
-				expect_read_error('(abc (def "ghi") jkl')
-				expect_read_error('(abc "ghi" jkl')
-				expect_read_error('(abc def jkl')
+				expect_read_error('abc(def("ghi") jkl)')
+				expect_read_error('abc("ghi" jkl)')
+				expect_read_error('abc(def jkl)')
 			end
 		end
 		
@@ -104,6 +104,13 @@ describe IndentRead do
 				"abc \" def"
 			)
 		end
+
+		it "transforms a list of nodes into one hash" do
+			expect_transforms_to(
+				{:nodes => [{:abc=>""}, {:def=>""}]},
+				{:abc=>"", :def=>""}
+			)
+		end
 	end
 
 	context "Parser" do
@@ -114,6 +121,9 @@ describe IndentRead do
 		def expect_parsed_equals(input, expected_parsed)
 			expect(parse(input)).to eq(expected_parsed)
 		end
+		
+		# commented out for now because I expect
+		#  the parsed representation to have a lot of churn
 		
 		#it "parses an empty tree" do
 			#expect_parsed_equals("", [])

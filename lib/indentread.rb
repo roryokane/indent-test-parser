@@ -12,6 +12,10 @@ module IndentRead
 	end
 	
 	class Transform < Parslet::Transform
+		combine_into_one_hash = lambda do |hash_array|
+			hash_array.reduce({}) { |hash, next_node| hash.merge(next_node) }
+		end
+		
 		rule(:str_chars => simple(:str_chars)) do
 			str_chars
 		end
@@ -26,6 +30,18 @@ module IndentRead
 		
 		rule(:symbol => simple(:symbol)) do
 			symbol.to_sym
+		end
+		
+		rule(:children => sequence(:children)) do |dict|
+			combine_into_one_hash.call(dict[:children])
+		end
+		
+		rule(:head => simple(:head), :children => sequence(:children)) do
+			{head => children}
+		end
+		
+		rule(:nodes => subtree(:nodes)) do |dict|
+			combine_into_one_hash.call(dict[:nodes])
 		end
 	end
 	
@@ -78,16 +94,21 @@ module IndentRead
 		
 		
 		# paren nodes
+		# these simulate explicit indent/dedent tokens
 		
 		rule(:paren_open) { str('(') }
 		rule(:paren_close) { str(')') }
 		
-		rule(:inside_parens) do
-			(paren_close.absent? >> any).repeat
+		rule(:paren_child) do
+			node_content >> space
+		end
+		
+		rule(:paren_children) do
+			space.maybe >> paren_child.repeat(0).as(:children)
 		end
 		
 		rule(:paren_node) do
-			paren_open >> inside_parens >> paren_close
+			node_content.as(:head) >> paren_open >> paren_children >> paren_close
 		end
 		
 		
@@ -104,13 +125,17 @@ module IndentRead
 		end
 		
 		
-		# root
+		# node collection
 		
 		rule(:node) do
 			line_node | paren_node
 		end
 		
-		root(:node)
+		rule(:nodes) do
+			node.repeat(0).as(:nodes)
+		end
+		
+		root(:nodes)
 	end
 end
 
