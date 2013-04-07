@@ -11,10 +11,17 @@ module IndentRead
 		end
 	end
 	
-	class Transform < Parslet::Transform
-		combine_into_one_hash = lambda do |hash_array|
+	class MyHash
+		def initialize(contents={})
+			@contents = {}
+		end
+		
+		def combine_into_one_hash hash_array
 			hash_array.reduce({}) { |hash, next_node| hash.merge(next_node) }
 		end
+	end
+	
+	class Transform < Parslet::Transform
 		
 		rule(:str_chars => simple(:str_chars)) do
 			str_chars
@@ -33,15 +40,15 @@ module IndentRead
 		end
 		
 		rule(:children => sequence(:children)) do |dict|
-			combine_into_one_hash.call(dict[:children])
+			MyHash.new(nodes)
 		end
 		
 		rule(:head => simple(:head), :children => sequence(:children)) do
 			{head => children}
 		end
 		
-		rule(:nodes => subtree(:nodes)) do |dict|
-			combine_into_one_hash.call(dict[:nodes])
+		rule(:nodes => sequence(:nodes)) do
+			MyHash.new(nodes)
 		end
 	end
 	
