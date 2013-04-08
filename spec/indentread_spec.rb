@@ -16,6 +16,26 @@ describe IndentRead do
 			end
 		end
 		
+		it "reads the mini-Lisp example input" do
+			expect_reads_as(
+				%Q{
+  (define test (lambda ()
+    (begin
+      (display "something")
+      (display 1)
+      (display 3.08))))
+},
+				[:define,
+					:test,
+					[:lambda,
+						[],
+						[:begin,
+							[:display, "something"],
+							[:display, 1],
+							[:display, 3.08]]]]
+			)
+		end
+		
 		context "reading single things" do
 			it "can read blank input" do
 				expect_reads_as(
