@@ -64,10 +64,20 @@ describe IndentRead do
 			expect(xform.apply(parsed)).to eq(structure)
 		end
 		
-		it "transforms a basic string" do
-		end
-		
-		it "transforms a string with a backslash-escape" do
+		context "transforming strings" do
+			it "transforms a basic string" do
+				expect_transforms_to(
+					{:string => "abc"},
+					'abc'
+				)
+			end
+			
+			it "transforms a string with a backslash-escape" do
+				expect_transforms_to(
+					{:string => 'abc \" def'},
+					'abc \" def'
+				)
+			end
 		end
 	end
 	
@@ -92,23 +102,23 @@ describe IndentRead do
 			
 			it "recognizes a basic string" do
 				string = '"abc"'
-				#expect(parse(string)).to eq(
-					#{:string_contents => [{:str_chars=>"abc"}]}
-				#)
+				expect(parse(string)).to eq(
+					{:string => "abc"}
+				)
 			end
 			
 			it "allows backslash-escaping quotes" do
 				string = '"abc \" def"'
-				#expect(parse(string)).to eq(
-					#{:string_contents => [{:str_chars=>"abc "}, {:str_escaped_char=>"\""}, {:str_chars=>" def"}]}
-				#)
+				expect(parse(string)).to eq(
+					{:string => 'abc \" def'}
+				)
 			end
 			
 			it "allows an empty string" do
 				string = '""'
-				#expect(parse(string)).to eq(
-					#{:string_contents => []}
-				#)
+				expect(parse(string)).to eq(
+					{:string => []}
+				)
 			end
 		end
 		
