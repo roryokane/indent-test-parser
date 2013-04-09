@@ -62,25 +62,25 @@ describe IndentRead do
 				)
 			end
 			
-			it "reads the mini-Lisp example input" do
-				expect_reads_as(
-					%Q{
-  (define test (lambda ()
-    (begin
-      (display "something")
-      (display 1)
-      (display 3.08))))
-},
-					[:define,
-						:test,
-						[:lambda,
-							[],
-							[:begin,
-								[:display, "something"],
-								[:display, 1],
-								[:display, 3.08]]]]
-				)
-			end
+			#it "reads the mini-Lisp example input" do
+				#expect_reads_as(
+					#%Q{
+  #(define test (lambda ()
+    #(begin
+      #(display "something")
+      #(display 1)
+      #(display 3.08))))
+#},
+					#[:define,
+						#:test,
+						#[:lambda,
+							#[],
+							#[:begin,
+								#[:display, "something"],
+								#[:display, 1],
+								#[:display, 3.08]]]]
+				#)
+			#end
 		end
 		
 		context "reading i-exps" do
@@ -91,19 +91,19 @@ describe IndentRead do
 				)
 			end
 			
-			it "reads an i-exp with an s-exp child" do
-				expect_reads_as(
-					"abc\n\t(def ghi)",
-					[:abc, [:def, :ghi]]
-				)
-			end
+			#it "reads an i-exp with an s-exp child" do
+				#expect_reads_as(
+					#"abc\n\t(def ghi)",
+					#[:abc, [:def, :ghi]]
+				#)
+			#end
 			
-			it "reads an i-exp with an i-exp child" do
-				expect_reads_as(
-					"abc\n\tdef\n\t\tghi",
-					[:abc, [:def, :ghi]]
-				)
-			end
+			#it "reads an i-exp with an i-exp child" do
+				#expect_reads_as(
+					#"abc\n\tdef\n\t\tghi",
+					#[:abc, [:def, :ghi]]
+				#)
+			#end
 		end
 	end
 	
