@@ -122,16 +122,16 @@ describe IndentRead do
 			end
 		end
 		
-		context "parsing symbols" do
-			def parse(symbol)
-				IndentRead::Parser.new.symbol.parse(symbol)
+		context "parsing identifiers" do
+			def parse(identifier)
+				IndentRead::Parser.new.identifier.parse(identifier)
 			end
 			
-			it "recognizes a symbol" do
-				symbol = "foobar"
-				#expect(parse(symbol)).to eq(
-					#{:symbol => "foobar"}
-				#)
+			it "recognizes an identifier" do
+				identifier = "foobar"
+				expect(parse(identifier)).to eq(
+					{:identifier => "foobar"}
+				)
 			end
 		end
 	end
