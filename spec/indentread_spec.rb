@@ -120,6 +120,18 @@ describe IndentRead do
 			expect(parse(input)).to eq(expected_parsed)
 		end
 		
+		context "parses s-exps" do
+			it "parses a two-item s-exp" do
+				expect_parsed_equals(
+					"(abc def)",
+					{:exp => [
+						{:identifier => "abc"},
+						{:identifier => "def"}
+					]}
+				)
+			end
+		end
+		
 		context "parses indentation" do
 			it "parses a two-level tree" do
 				# no tests yet in anticipation of churn
