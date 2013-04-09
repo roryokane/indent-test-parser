@@ -66,16 +66,24 @@ describe IndentRead do
 		
 		context "reading i-exps" do
 			it "reads an i-exp with a basic child" do
-				#expect_reads_as(
-					#"abc\n\tdef",
-					#{:abc => :def}
-				#)
+				expect_reads_as(
+					"abc\n\tdef",
+					[:abc, :def]
+				)
 			end
+			
 			it "reads an i-exp with an s-exp child" do
-				#expect_reads_as(
-					#"abc\n\tdef\n\t\t\"ghi\"",
-					#{:abc => {:def => "ghi"}}
-				#)
+				expect_reads_as(
+					"abc\n\t(def ghi)",
+					[:abc, [:def, :ghi]]
+				)
+			end
+			
+			it "reads an i-exp with an i-exp child" do
+				expect_reads_as(
+					"abc\n\tdef\n\t\tghi",
+					[:abc, [:def, :ghi]]
+				)
 			end
 		end
 	end
@@ -114,6 +122,7 @@ describe IndentRead do
 		
 		context "parses indentation" do
 			it "parses a two-level tree" do
+				# no tests yet in anticipation of churn
 			end
 		end
 		
