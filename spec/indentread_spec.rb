@@ -49,8 +49,7 @@ describe IndentRead do
 	(begin
 		(display "something")
 		(display 1)
-		(display 3.08))))
-},
+		(display 3.08))))},
 					[:define,
 						:test,
 						[:lambda,
