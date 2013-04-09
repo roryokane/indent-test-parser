@@ -36,9 +36,9 @@ describe IndentRead do
 			
 			it "reads a single-line let-like expression" do
 				expect_reads_as(
-					"(let (group (a 1) (b 2)) (add a b))",
+					"(let ((a 1) (b 2)) (add a b))",
 					[:let,
-						[:group, [:a, 1], [:b, 2]],
+						[[:a, 1], [:b, 2]],
 						[:add, :a, :b]]
 				)
 			end
