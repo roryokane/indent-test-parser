@@ -16,40 +16,62 @@ describe IndentRead do
 			end
 		end
 		
-		it "reads the mini-Lisp example input" do
-			expect_reads_as(
-				%Q{
+		context "reading single things" do
+		end
+		
+		context "reading s-exps" do
+			it "reads a basic expression" do
+				expect_reads_as(
+					"(print a b)",
+					[:print, :a, :b]
+				)
+			end
+			
+			it "reads a single-nesting expression" do
+				expect_reads_as(
+					"(print a b (add a b))",
+					[:print, :a, :b, [:add, :a, :b]]
+				)
+			end
+			
+			it "reads a single-line let-like expression" do
+				expect_reads_as(
+					"(let (group (a 1) (b 2)) (add a b))",
+					[:let,
+						[:group, [:a, 1], [:b, 2]],
+						[:add, :a, :b]]
+				)
+			end
+			
+			it "reads the mini-Lisp example input" do
+				expect_reads_as(
+					%Q{
   (define test (lambda ()
     (begin
       (display "something")
       (display 1)
       (display 3.08))))
 },
-				[:define,
-					:test,
-					[:lambda,
-						[],
-						[:begin,
-							[:display, "something"],
-							[:display, 1],
-							[:display, 3.08]]]]
-			)
+					[:define,
+						:test,
+						[:lambda,
+							[],
+							[:begin,
+								[:display, "something"],
+								[:display, 1],
+								[:display, 3.08]]]]
+				)
+			end
 		end
 		
-		context "reading single things" do
-		end
-		
-		context "reading paren nodes" do
-		end
-		
-		context "reading line nodes" do
-			it "reads a line node with a basic child" do
+		context "reading i-exps" do
+			it "reads an i-exp with a basic child" do
 				#expect_reads_as(
 					#"abc\n\tdef",
 					#{:abc => :def}
 				#)
 			end
-			it "reads a line node with a paren-node child" do
+			it "reads an i-exp with an s-exp child" do
 				#expect_reads_as(
 					#"abc\n\tdef\n\t\t\"ghi\"",
 					#{:abc => {:def => "ghi"}}
