@@ -35,14 +35,35 @@ module IndentRead
 			s_expression | i_expression
 		}
 		
+		# use scope{} to help read indents when there are nested i-exps
+		
+		# start by assuming I-exps are only ever at the 0th indent level. Assume 0 indents on the first line, exactly 1 indents on further lines. No nested I-exps to start with.
 		rule(:i_expression) {
+			# will probably add initial_indent here later
 			i_body >> inline_space? >> newline
 		}
 		
+		rule(:one_indent) {
+			str("\t") | str('  ')
+		} # two spaces hard-coded
+		rule(:indent) {
+			# match and capture indent
+			one_indent.repeat.as(:indents)
+		}
+		rule(:dedent) {
+			# dynamically match same indent as last indent in scope
+		}
+		# not sure if I want this rule:
+		rule(:indented_something_body) {
+			# match one more indent
+			# maybe use scope{} inside; maybe that’s for another rule to do
+		}
+		
+		# further plan:
+		# first line consumes and captures indent
+		# second and onward lines contain (indent >> value) | i_expression
 		rule(:i_body) {
-			# FIXME right now, there is infinite left recursion
-			# but before rushing into fixing it, finish making the expression grammars actually plausible
-			(i_expression >> inline_space?) >> ((s_expression | value) >> inline_space?).repeat.as(:exp)
+			(value >> inline_space?) >> ((s_expression | value) >> inline_space?).repeat.as(:exp)
 		}
 		
 		rule(:newline) {
