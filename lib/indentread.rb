@@ -28,6 +28,8 @@ module IndentRead
 		rule(:exp => subtree(:exp)) { exp }
 	end
 	
+	# Actually, this project is too ambitious for a mere example of parsing indentation. This is part-way towards a real project, even though it’s simplified. A real demo of just parsing indentation would work with just a lisp calculator with no S-expressions, only I-expressions. The difference between that and this version of Lisp is having only two data types, and not supporting S-expressions.
+	
 	# TODO After getting this copy of MiniLisp basically working, paste back previous code that was removed that is still applicable.
 	class Parser < Parslet::Parser
 		root(:expression)
